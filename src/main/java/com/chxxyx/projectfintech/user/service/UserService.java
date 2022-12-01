@@ -50,12 +50,18 @@ public class UserService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<User> userOptional = this.userRepository.findByEmailId(username);
 		if (userOptional.isEmpty()) {
-			throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
+			throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
 		}
 		User user = userOptional.get();
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
+		if(User.ADMIN.equals(user.getUserType())) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
+
 		return new org.springframework.security.core.userdetails.User(user.getEmailId(), user.getPassword(), authorities);
 	}
+
+	// 이메일 인증
 }

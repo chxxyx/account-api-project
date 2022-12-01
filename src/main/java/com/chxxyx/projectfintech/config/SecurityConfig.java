@@ -37,6 +37,11 @@ public class SecurityConfig {
 		http.authorizeRequests()
 			.antMatchers("/",
 				"/user/register").permitAll() /// permitAll(모든 접근 가능 )
+
+			// 관리자
+			.antMatchers("/admin/**")
+			.hasRole("ADMIN")
+
 			.anyRequest()
 			.authenticated()
 			.and()
