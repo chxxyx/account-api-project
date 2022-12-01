@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>회원 가입</title>
@@ -8,25 +8,29 @@
 <body>
 <div class="wrap">
   <div class="join">
-    <h2>jo-in</h2>
+    <h2>Sign-up</h2>
 
-    <form method="post">
+    <form method="post" th:object="${userDto}">
       <div class="user_id" >
         <h4>E-mail</h4>
-        <input type="email" name="emailId" id="emailId" placeholder="아이디(email) 입력">
+        <input type="email" th:field="*{emailId}" name="emailId" id="emailId" placeholder="아이디(email) 입력">
       </div>
+      <div th:if="${#fields.hasErrors('emailId')}" th:errors="*{emailId}" class="fieldError" style="color: red"></div>
       <div class="join">
         <h4>Password</h4>
-        <input type="password" name="password" id="password" placeholder="Password 입력">
+        <input type="password" th:field="*{password}" name="password" id="password" placeholder="Password 입력">
       </div>
+      <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError" style="color: red"></div>
       <div class="join">
         <h4>주민 번호</h4>
-        <input type="text" name="SSN" id="SSN" placeholder="주민 번호 입력">
+        <input type="text" th:field="*{SSN}" name="SSN" id="SSN" placeholder="주민 번호 입력">
       </div>
+      <div th:if="${#fields.hasErrors('SSN')}" th:errors="*{SSN}" class="fieldError" style="color: red"></div>
 
       <div class="join">
         <h4>Name</h4>
-        <input type="text" name="userName" id="userName" placeholder="이름 입력">
+        <input type="text" th:field="*{userName}" name="userName" id="userName" placeholder="이름 입력">
+        <div th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="fieldError" style="color: red"></div>
       </div>
 
       <p>

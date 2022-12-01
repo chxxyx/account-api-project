@@ -3,19 +3,23 @@ package com.chxxyx.projectfintech.user.dto;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class UserDto {
 
-	@NotNull(message = "사용자 주민 번호는 필수 항목입니다.")
+	@NotEmpty(message = "사용자 주민 번호는 필수 항목입니다.")
 	private String SSN;//주민번호
 
 	@NotEmpty(message = "사용자 이름은 필수 항목입니다.")
 	private String userName;//유저 이름
 
-	@NotEmpty(message = "비밀번호는 필수 항목입니다.")
+	@NotEmpty(message = "사용자 비밀번호는 필수 항목입니다.")
 	private String password;
 
 	private LocalDateTime createdAt;
