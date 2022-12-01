@@ -1,6 +1,7 @@
 package com.chxxyx.projectfintech.user.entity;
 
 
+import com.chxxyx.projectfintech.user.type.UserType;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Entity
-public class User {
+public class User implements UserType {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
