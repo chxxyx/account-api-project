@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+/.idea/
+/.mvn/
+/mvnw/
+/mvnw.cmd
