@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
@@ -38,6 +39,13 @@ public class UserController {
 
 
 		return "redirect:/";
+	}
+	// 로그인
+	@RequestMapping( "/user/login")
+	public String login() {
+
+		return "user/login";
+
 	}
 
 }
