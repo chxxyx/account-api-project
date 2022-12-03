@@ -4,6 +4,7 @@ import com.chxxyx.projectfintech.user.dto.UserDto;
 import com.chxxyx.projectfintech.user.service.UserService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

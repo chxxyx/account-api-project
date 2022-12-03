@@ -1,5 +1,6 @@
 package com.chxxyx.projectfintech.user.dto;
 
+import com.chxxyx.projectfintech.user.type.UserRole;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -18,7 +19,7 @@ public class UserDto {
 	private String SSN;//주민번호
 
 	@NotBlank(message = "사용자 이름은 필수 항목입니다.")
-	private String userName;//유저 이름
+	private String name;//유저 이름
 
 	@NotBlank(message = "사용자 비밀번호는 필수 항목입니다.")
 	private String password;
@@ -29,9 +30,8 @@ public class UserDto {
 
 	@NotBlank(message = "사용자 ID(email)는 필수 항목입니다.")
 	@Email
-	private String emailId; //유저 id
-	private Boolean emailAuthYn; //이메일 인증 여부
-	private String userType; // 관리자, 회원 구분
+	private String username; //유저 id
+	private UserRole role; // 관리자, 회원 구분
 
 
 }

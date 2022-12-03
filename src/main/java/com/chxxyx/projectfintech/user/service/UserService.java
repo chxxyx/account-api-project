@@ -3,6 +3,7 @@ package com.chxxyx.projectfintech.user.service;
 import com.chxxyx.projectfintech.user.repository.UserRepository;
 import com.chxxyx.projectfintech.user.dto.UserDto;
 import com.chxxyx.projectfintech.user.entity.User;
+import com.chxxyx.projectfintech.user.type.UserRole;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,13 @@ public class UserService implements UserDetailsService {
 
 	public boolean userRegister(UserDto parameter) {
 
+		Optional<User> optionalMember = userRepository.findByUsername(parameter.getUsername());
+
+		if(optionalMember.isPresent()) {
+			// 현재 userid에 해당하는 데이터가 존재ㅣ
+			return false;
+		}
+
 
 		String encPassword = BCrypt.hashpw(parameter.getPassword(), BCrypt.gensalt());
 		String encSSN = BCrypt.hashpw(parameter.getSSN(), BCrypt.gensalt());
@@ -32,13 +40,13 @@ public class UserService implements UserDetailsService {
 		User user = User.builder()
 			.id(UUID.randomUUID())
 			.SSN(encSSN)
-			.userName(parameter.getUserName())
+			.name(parameter.getName())
 			.password(encPassword)
 			.createdAt(LocalDateTime.now())
-			.emailId(parameter.getEmailId())
-			.emailAuthYn(false)
-			.userType(User.USER)
+			.username(parameter.getUsername())
+			.role(UserRole.ROLE_MEMBER)
 			.build();
+
 
 		userRepository.save(user);
 
@@ -48,7 +56,7 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> userOptional = this.userRepository.findByEmailId(username);
+		Optional<User> userOptional = this.userRepository.findByUsername(username);
 		if (userOptional.isEmpty()) {
 			throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
 		}
@@ -56,12 +64,11 @@ public class UserService implements UserDetailsService {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-		if(User.ADMIN.equals(user.getUserType())) {
+		if(UserRole.ROLE_ADMIN.equals(user.getRole())) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
 
-		return new org.springframework.security.core.userdetails.User(user.getEmailId(), user.getPassword(), authorities);
+		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
 	}
 
-	// 이메일 인증
 }
