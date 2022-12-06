@@ -12,7 +12,7 @@
     <form method="post" th:object="${userDto}">
       <div class="user_id" >
         <h4>E-mail</h4>
-        <input type="text" th:field="*{username}" name="username" id="username" placeholder="아이디 입력">
+        <input type="text" th:field="*{username}" name="username" id="username" placeholder="ID 입력">
       </div>
       <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="fieldError" style="color: red"></div>
       <div class="join">
