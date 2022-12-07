@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Log-in</title>
+</head>
+<body>
+
+<h1>Log-in</h1>
+<div th:text="${errorMessage}"></div>
+
+<form method="post">
+  <div>
+    <label>
+      <input type="text" name="username" placeholder="ID 입력" required/>
+    </label>
+  </div>
+  <div>
+    <label>
+      <input type="password" name="password" placeholder="비밀번호 입력" required/>
+    </label>
+  </div>
+  <div>
+    <button type="submit">로그인</button>
+  </div>
+
+  <div>
+    <a href="">Forgot Password ?</a><br>
+    <a href="/user/register">Sign-up</a>
+  </div>
+
+</form>
+
+</body>
+</html>
