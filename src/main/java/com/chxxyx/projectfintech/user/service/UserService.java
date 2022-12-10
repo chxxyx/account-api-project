@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,16 +24,15 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
-	public boolean userRegister(UserDto parameter) {
+	public User userRegister(UserDto parameter) {
+		Optional<User> optionalUser = userRepository.findByUsername(parameter.getUsername());
 
-		Optional<User> optionalMember = userRepository.findByUsername(parameter.getUsername());
-
-		if(optionalMember.isPresent()) {
+		if(optionalUser.isPresent()) {
 			// 현재 userid에 해당하는 데이터가 존재ㅣ
-			return false;
+			throw new RuntimeException("이미 사용 중인 아이디 입니다.");
 		}
-
 
 		String encPassword = BCrypt.hashpw(parameter.getPassword(), BCrypt.gensalt());
 		String encSSN = BCrypt.hashpw(parameter.getSSN(), BCrypt.gensalt());
@@ -44,14 +44,23 @@ public class UserService implements UserDetailsService {
 			.password(encPassword)
 			.createdAt(LocalDateTime.now())
 			.username(parameter.getUsername())
-			.role(UserRole.ROLE_MEMBER)
+			.role(UserRole.ROLE_USER)
 			.build();
-
-
 		userRepository.save(user);
 
-		return true;
+		return user;
 
+	}
+	public User login(UserDto parameter) {
+		System.out.println("::::::::::::::::::::::::"+parameter.getUsername());
+		User user = userRepository.findByUsername(parameter.getUsername())
+			.orElseThrow(() -> new RuntimeException("존재 하지 않는 ID 입니다."));
+
+		if (!passwordEncoder.matches(parameter.getPassword(), user.getPassword())) {
+			throw new RuntimeException("비밀번호가 일치 하지 않습니다.");
+		}
+
+		return user;
 	}
 
 	@Override

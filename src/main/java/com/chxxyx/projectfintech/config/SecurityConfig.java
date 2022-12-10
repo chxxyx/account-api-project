@@ -6,64 +6,67 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
 
 	private final UserService userService;
+	private final JwtAuthenticationFilter authenticationFilter;
 	AuthenticationManager authenticationManager;
+
+	@Bean
+	public WebSecurityCustomizer configure() {
+
+		return (web) -> web.ignoring()
+			.antMatchers("/ignore1");
+	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-		authenticationManagerBuilder.userDetailsService(userService);
-		authenticationManager = authenticationManagerBuilder.build();
-
-		// (rest api) 외부에서의 호출을 위한
 		http
-			//.cors().disable()
+			//.httpBasic().disable()
+			.cors().disable()
 			.csrf().disable(); // csrf 토큰 비활성화
-		http    .headers().frameOptions().sameOrigin();
+//		http    .headers().frameOptions().sameOrigin();
 
-		http.authorizeRequests()
-			.antMatchers("/",
-				"/user/register").permitAll() /// permitAll(모든 접근 가능 )
+		http
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
+			.authorizeRequests().antMatchers("/",
+				"/user/register", "/user/login").permitAll() /// permitAll(모든 접근 가능 )
 
 			// 관리자
 			.antMatchers("/admin/**")
 			.hasRole("ADMIN")
+			.antMatchers("/user/**")
+			.hasRole("USER")
+			.antMatchers("/account/**")
+			.hasRole("USER")
 
 			.anyRequest()
-			.authenticated()
-			.and()
-			.authenticationManager(authenticationManager)
-			.formLogin()
-			.loginPage("/user/login")
-			.defaultSuccessUrl("/")
-			.failureHandler(getFailureHandler()).permitAll() // 실패 요청 처리 핸들러
-			.and()
-			.logout()
-			.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout")) // logout url
-			.logoutSuccessUrl("/") // 성공시 리턴 url
-			.invalidateHttpSession(true) // 인증정보 지우고 세션 무효화
-			.and()
-			.exceptionHandling()
-		;
+			.authenticated();
+		//JwtFilter 추가
+		http.addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public static PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
