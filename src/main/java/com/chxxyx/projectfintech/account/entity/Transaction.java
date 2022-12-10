@@ -1,9 +1,7 @@
 package com.chxxyx.projectfintech.account.entity;
 
-import com.chxxyx.projectfintech.account.exception.AccountException;
-import com.chxxyx.projectfintech.account.type.AccountError;
-import com.chxxyx.projectfintech.account.type.AccountStatus;
-import com.chxxyx.projectfintech.user.entity.User;
+import com.chxxyx.projectfintech.account.type.TransactionResultType;
+import com.chxxyx.projectfintech.account.type.TransactionType;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -15,41 +13,42 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-@Builder
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Account {
+public class Transaction {
 
 	@Id
-	private String accountNumber;
-	private Long balance;
-	private String accountPassword;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
 	@Enumerated(EnumType.STRING)
-	private AccountStatus accountStatus;
+	private TransactionType transactionType;
+
+	@Enumerated(EnumType.STRING)
+	private TransactionResultType transactionResultType;
 
 	@ManyToOne
-    private User accountUser;
+	private Account account;
 
-	private LocalDateTime registeredAt;
-	private LocalDateTime unRegisteredAt;
+	private Long amount;
+	private Long balanceSnapshot;
+
+	private LocalDateTime transactedAt;
 
 	@CreatedDate
 	private LocalDateTime createdAt;
 	@LastModifiedDate
-	private LocalDateTime modifiedAt;
+	private LocalDateTime updatedAt;
 
-	public void deposit(Long amount) {
-		if (amount < 0) {
-			throw new AccountException(AccountError.INVALID_REQUEST);
-		}
-		balance += amount;
-	}
 }

@@ -52,9 +52,7 @@ public class SecurityConfig {
 			// 관리자
 			.antMatchers("/admin/**")
 			.hasRole("ADMIN")
-			.antMatchers("/user/**")
-			.hasRole("USER")
-			.antMatchers("/account/**")
+			.antMatchers("/user/**","/account/**","/transaction/**")
 			.hasRole("USER")
 
 			.anyRequest()
