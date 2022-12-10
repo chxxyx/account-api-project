@@ -1,6 +1,7 @@
 package com.chxxyx.projectfintech.account.service;
 
 import static com.chxxyx.projectfintech.account.type.AccountStatus.IN_USE;
+import static com.chxxyx.projectfintech.account.type.AccountStatus.UNREGISTERED;
 
 import com.chxxyx.projectfintech.ProjectFinTechApplication;
 import com.chxxyx.projectfintech.account.dto.AccountDto;
@@ -8,6 +9,7 @@ import com.chxxyx.projectfintech.account.entity.Account;
 import com.chxxyx.projectfintech.account.exception.AccountException;
 import com.chxxyx.projectfintech.account.repository.AccountRepository;
 import com.chxxyx.projectfintech.account.type.AccountError;
+import com.chxxyx.projectfintech.account.type.AccountStatus;
 import com.chxxyx.projectfintech.user.entity.User;
 import com.chxxyx.projectfintech.user.repository.UserRepository;
 import java.time.LocalDateTime;
@@ -38,7 +40,7 @@ public class AccountService {
 
 		// 계좌 생성 (수정 필요)
 		String accountNumber = accountRepository.findFirstByOrderByAccountNumberDesc().map(account
-			-> (Integer.parseInt(account.getAccountNumber())) + 1 + "").orElse("100000000");
+			-> (Integer.parseInt(account.getAccountNumber())) + 1 + "").orElse("1000000000");
 		// 계좌 비번 암호화
 //		String accountPW = BCrypt.hashpw(accountPassword, BCrypt.gensalt());
 
@@ -54,9 +56,34 @@ public class AccountService {
 		));
 	}
 	private void validateCreateAccount(User accountUser) {
-		if (accountRepository.countByAccountUser(accountUser) == 10) {
+		if (accountRepository.countByAccountUser(accountUser) >= 10) {
 			throw new AccountException(AccountError.MAX_ACCOUNT_PER_USER_10);
 		}
 	}
 
+	@Transactional
+	public AccountDto deleteAccount(String username, String password, String accountNumber, String accountPassword) {
+		User accountUser = userRepository.findByUsername(username)
+			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
+		Account account = accountRepository.findByAccountNumber(accountNumber)
+			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
+		
+		validateDeleteAccount(accountUser, account);
+
+		account.setAccountStatus(UNREGISTERED);
+		account.setUnRegisteredAt(LocalDateTime.now());
+
+		accountRepository.save(account);
+
+		return AccountDto.fromEntity(account);
+	}
+
+	private void validateDeleteAccount(User accountUser, Account account) {
+		if (accountUser.getUsername() != account.getAccountUser().getUsername()) {
+			throw new AccountException(AccountError.USER_ACCOUNT_UN_MATCH);
+		}
+		if (account.getAccountStatus() == UNREGISTERED) {
+			throw new AccountException(AccountError.ACCOUNT_ALREADY_UNREGISTERED);
+		}
+	}
 }
