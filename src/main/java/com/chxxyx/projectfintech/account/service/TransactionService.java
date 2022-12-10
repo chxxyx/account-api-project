@@ -2,8 +2,8 @@ package com.chxxyx.projectfintech.account.service;
 
 import static com.chxxyx.projectfintech.account.type.TransactionResultType.*;
 import static com.chxxyx.projectfintech.account.type.TransactionType.DEPOSIT;
+import static com.chxxyx.projectfintech.account.type.TransactionType.WITHDRAW;
 
-import com.chxxyx.projectfintech.account.dto.DepositBalance;
 import com.chxxyx.projectfintech.account.dto.TransactionDto;
 import com.chxxyx.projectfintech.account.entity.Account;
 import com.chxxyx.projectfintech.account.entity.Transaction;
@@ -37,7 +37,7 @@ public class TransactionService {
 			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
 		Account account = accountRepository.findByAccountNumber(accountNumber)
 			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
-		
+
 		validateDepositBalance(user, account);
 		account.deposit(amount);
 
@@ -59,6 +59,42 @@ public class TransactionService {
 
 		saveAndGetTransaction(DEPOSIT, FAIL, account, amount);
 	}
+	@Transactional
+	public TransactionDto withdrawBalance(String username, String password, String accountNumber,
+											String accountPassword, Long amount){
+
+		User user = userRepository.findByUsername(username) // 사용자 조회
+			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
+
+		Account account = accountRepository.findByAccountNumber(accountNumber) // 계좌 조회
+			.orElseThrow(()-> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
+
+		validateWithdrawBalance(user, account, amount);
+
+		account.withdraw(amount);
+
+		return TransactionDto.fromEntity(saveAndGetTransaction(WITHDRAW, SUCCESS, account, amount));
+	}
+
+	private void validateWithdrawBalance(User user, Account account, Long amount) {
+		if (user.getUsername() != account.getAccountUser().getUsername()) {
+			throw new AccountException(AccountError.USER_ACCOUNT_UN_MATCH);
+		}
+		if (account.getAccountStatus() != AccountStatus.IN_USE) {
+			throw new AccountException(AccountError.ACCOUNT_ALREADY_UNREGISTERED);
+		}
+		if (account.getBalance() < amount) {
+			throw new AccountException(AccountError.ACCOUNT_EXCEED_BALANCE);
+		}
+	}
+
+	@Transactional
+	public void saveFailedWithdrawTransaction(String accountNumber, Long amount) {
+		Account account = accountRepository.findByAccountNumber(accountNumber)
+			.orElseThrow(()-> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
+		saveAndGetTransaction(WITHDRAW, FAIL, account, amount);
+	}
+
 
 	// 코드 중복 최소화, 저장하는 부분 공통화
 	private Transaction saveAndGetTransaction(

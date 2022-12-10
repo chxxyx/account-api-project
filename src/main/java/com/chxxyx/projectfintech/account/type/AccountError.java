@@ -11,7 +11,8 @@ public enum AccountError {
 	ACCOUNT_NOT_FOUND("계좌가 없습니다."),
 	USER_ACCOUNT_UN_MATCH("사용자와 계좌의 소유주가 다릅니다."),
 	ACCOUNT_ALREADY_UNREGISTERED("이미 해지된 계좌입니다."),
-	INVALID_REQUEST("잘못된 요청입니다.")
+	INVALID_REQUEST("잘못된 요청입니다."),
+	ACCOUNT_EXCEED_BALANCE("출금 금액이 계좌 잔액 보다 큽니다.")
 	;
 
 	private final String description;

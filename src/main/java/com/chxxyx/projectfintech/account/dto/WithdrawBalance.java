@@ -1,13 +1,10 @@
 package com.chxxyx.projectfintech.account.dto;
 
-import com.chxxyx.projectfintech.account.dto.CreateAccount.Response;
-import com.chxxyx.projectfintech.account.entity.Transaction;
 import com.chxxyx.projectfintech.account.type.TransactionResultType;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -16,13 +13,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class DepositBalance {
-
+public class WithdrawBalance {
 	@Getter
 	@Setter
-	@NoArgsConstructor
 	@AllArgsConstructor
-	public static class Request {
+	public static class Request { //이너 클래스
 
 		@NotNull
 		private String username;
@@ -43,7 +38,6 @@ public class DepositBalance {
 		private Long amount;
 
 	}
-
 	@Getter
 	@Setter
 	@NoArgsConstructor
@@ -52,6 +46,7 @@ public class DepositBalance {
 	public static class Response { //이너 클래스
 		private String accountNumber;
 		private TransactionResultType transactionResult;
+		private Long balanceSnapshot;
 		private Long amount;
 		private LocalDateTime transactedAt;
 
@@ -60,9 +55,9 @@ public class DepositBalance {
 				.accountNumber(transactionDto.getAccountNumber())
 				.transactionResult(transactionDto.getTransactionResultType())
 				.amount(transactionDto.getAmount())
+				.balanceSnapshot(transactionDto.getBalanceSnapshot())
 				.transactedAt(transactionDto.getTransactedAt())
 				.build();
 		}
 	}
-
 }

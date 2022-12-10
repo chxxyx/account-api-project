@@ -1,6 +1,7 @@
 package com.chxxyx.projectfintech.account.controller;
 
 import com.chxxyx.projectfintech.account.dto.DepositBalance;
+import com.chxxyx.projectfintech.account.dto.WithdrawBalance;
 import com.chxxyx.projectfintech.account.exception.AccountException;
 import com.chxxyx.projectfintech.account.service.TransactionService;
 import javax.validation.Valid;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
 	private final TransactionService transactionService;
 
-	@PostMapping("/transaction/use")
+	@PostMapping("/transaction/deposit")
 	public DepositBalance.Response depositBalance(@RequestBody @Valid DepositBalance.Request request) {
 		try {
 			return DepositBalance.Response.from(
@@ -25,6 +26,22 @@ public class TransactionController {
 			);
 		} catch (AccountException e) {
 			transactionService.saveFailedDepositTransaction(
+				request.getAccountNumber(),
+				request.getAmount()
+			);
+			throw e;
+		}
+	}
+
+	@PostMapping("/transaction/withdraw")
+	public WithdrawBalance.Response withdrawBalance(@RequestBody @Valid WithdrawBalance.Request request) {
+		try {
+			return WithdrawBalance.Response.from(
+				transactionService.withdrawBalance(request.getUsername(), request.getPassword(),
+					request.getAccountNumber(), request.getAccountPassword(), request.getAmount())
+			);
+		} catch (AccountException e) {
+			transactionService.saveFailedWithdrawTransaction(
 				request.getAccountNumber(),
 				request.getAmount()
 			);

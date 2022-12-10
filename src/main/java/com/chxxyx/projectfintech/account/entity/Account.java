@@ -52,4 +52,11 @@ public class Account {
 		}
 		balance += amount;
 	}
+
+	public void withdraw(Long amount) {
+		if(amount > balance) {
+			throw  new AccountException(AccountError.ACCOUNT_EXCEED_BALANCE);
+		}
+		balance -= amount;
+	}
 }
