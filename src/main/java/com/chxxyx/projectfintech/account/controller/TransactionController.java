@@ -1,6 +1,7 @@
 package com.chxxyx.projectfintech.account.controller;
 
 import com.chxxyx.projectfintech.account.dto.DepositBalance;
+import com.chxxyx.projectfintech.account.dto.TransferBalance;
 import com.chxxyx.projectfintech.account.dto.WithdrawBalance;
 import com.chxxyx.projectfintech.account.exception.AccountException;
 import com.chxxyx.projectfintech.account.service.TransactionService;
@@ -43,6 +44,23 @@ public class TransactionController {
 		} catch (AccountException e) {
 			transactionService.saveFailedWithdrawTransaction(
 				request.getAccountNumber(),
+				request.getAmount()
+			);
+			throw e;
+		}
+	}
+
+	@PostMapping("/transaction/transfer")
+	public TransferBalance.Response transferBalance(@RequestBody @Valid TransferBalance.Request request) {
+		try {
+			return TransferBalance.Response.from(
+				transactionService.transferBalance(request.getUsername(), request.getPassword(),
+					request.getSenderName(), request.getSenderAccountNumber(), request.getAccountPassword(),
+					request.getReceiverName(), request.getReceiverAccountNumber(), request.getAmount())
+			);
+		} catch (AccountException e) {
+			transactionService.saveFailedTransfer(
+				request.getSenderAccountNumber(),
 				request.getAmount()
 			);
 			throw e;
