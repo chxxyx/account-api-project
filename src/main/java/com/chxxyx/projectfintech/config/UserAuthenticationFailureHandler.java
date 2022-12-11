@@ -8,19 +8,17 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
-public class UserAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+class UserAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException exception) throws IOException, ServletException {
-
 
 		String message = "로그인에 실패하였습니다.";
 		if (exception instanceof InternalAuthenticationServiceException){
 
 			message = exception.getMessage();
 		}
-
 
 		setUseForward(true);
 		setDefaultFailureUrl("/user/login?error=true");

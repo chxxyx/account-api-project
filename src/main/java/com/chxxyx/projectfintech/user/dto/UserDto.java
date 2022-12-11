@@ -2,15 +2,12 @@ package com.chxxyx.projectfintech.user.dto;
 
 import com.chxxyx.projectfintech.user.type.UserRole;
 import java.time.LocalDateTime;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,6 +36,5 @@ public class UserDto {
 		message = "아이디는 영문, 숫자만 가능하며 4 ~ 10자리 이내로 입력해주세요.")
 	private String username; //유저 id
 	private UserRole role; // 관리자, 회원 구분
-
 
 }
