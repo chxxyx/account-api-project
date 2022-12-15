@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 public enum UserRole {
 	ROLE_ADMIN("관리자"),
-	ROLE_MEMBER("사용자");
+	ROLE_USER("사용자");
 
 	UserRole(String value) {
 		this.value = value;
