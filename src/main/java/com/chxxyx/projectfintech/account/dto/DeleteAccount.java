@@ -19,11 +19,11 @@ public class DeleteAccount {
 	@AllArgsConstructor
 	public static class Request {
 
-		@NotNull
+		@NotBlank
 		private String username;
-		@NotNull
+		@NotBlank
 		private String password;
-		@NotNull
+		@NotBlank
 		private String accountPassword;
 		@NotBlank
 		@Size(min = 10, max = 10)

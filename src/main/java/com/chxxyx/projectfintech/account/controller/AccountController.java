@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 	private final AccountService accountService;
 
-    @PostMapping("/account/create")
+	@PostMapping("/account/create")
 	@PreAuthorize("hasRole('USER')")
 	public CreateAccount.Response createAccount(@RequestBody @Valid CreateAccount.Request request) {
 

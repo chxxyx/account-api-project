@@ -20,11 +20,12 @@ public class TransferBalance {
 	@AllArgsConstructor
 	public static class Request {
 
-		@NotNull
+		@NotBlank
 		private String username;
-
-		@NotNull
+		@NotBlank
 		private String password;
+		@NotBlank
+		private String accountPassword;
 
 		@NotBlank
 		private String senderName;
@@ -33,8 +34,6 @@ public class TransferBalance {
 		@Size(min = 10, max = 10)
 		private String senderAccountNumber;
 
-		@NotBlank
-		private String accountPassword;
 
 		@NotBlank
 		private String receiverName;

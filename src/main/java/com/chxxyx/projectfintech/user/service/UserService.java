@@ -52,7 +52,6 @@ public class UserService implements UserDetailsService {
 
 	}
 	public User login(UserDto parameter) {
-		System.out.println("::::::::::::::::::::::::"+parameter.getUsername());
 		User user = userRepository.findByUsername(parameter.getUsername())
 			.orElseThrow(() -> new RuntimeException("존재 하지 않는 ID 입니다."));
 
