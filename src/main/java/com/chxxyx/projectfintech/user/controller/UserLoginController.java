@@ -6,8 +6,10 @@ import com.chxxyx.projectfintech.user.entity.User;
 import com.chxxyx.projectfintech.user.service.UserService;
 import com.chxxyx.projectfintech.user.type.UserRole;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +24,7 @@ public class UserLoginController {
 
 	// 로그인
 	@PostMapping( "/user/login")
-	public String login(@RequestBody UserDto userDto, HttpServletResponse response) {
+	public String login(@RequestBody @Valid UserDto userDto, HttpServletResponse response) {
 
 		log.debug(userDto.getUsername());
 		User user = userService.login(userDto);
