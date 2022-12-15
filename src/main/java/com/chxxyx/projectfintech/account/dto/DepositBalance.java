@@ -24,10 +24,9 @@ public class DepositBalance {
 	@AllArgsConstructor
 	public static class Request {
 
-		@NotNull
+		@NotBlank
 		private String username;
-
-		@NotNull
+		@NotBlank
 		private String password;
 
 		@NotBlank

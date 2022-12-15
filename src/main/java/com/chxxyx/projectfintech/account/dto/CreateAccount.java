@@ -3,6 +3,7 @@ package com.chxxyx.projectfintech.account.dto;
 import com.chxxyx.projectfintech.ProjectFinTechApplication;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +20,11 @@ public class CreateAccount {
 	@AllArgsConstructor
 	public static class Request {
 
-		@NotNull
+		@NotBlank
 		private String username;
-		@NotNull
+		@NotBlank
 		private String password;
-		@NotNull
+		@NotBlank
 		private String accountPassword;
 		@NotNull
 		private Long balance;

@@ -19,10 +19,9 @@ public class WithdrawBalance {
 	@AllArgsConstructor
 	public static class Request { //이너 클래스
 
-		@NotNull
+		@NotBlank
 		private String username;
-
-		@NotNull
+		@NotBlank
 		private String password;
 
 		@NotBlank
