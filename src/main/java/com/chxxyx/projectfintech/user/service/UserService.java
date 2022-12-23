@@ -1,5 +1,6 @@
 package com.chxxyx.projectfintech.user.service;
 
+import com.chxxyx.projectfintech.user.dto.UserLoginDto;
 import com.chxxyx.projectfintech.user.repository.UserRepository;
 import com.chxxyx.projectfintech.user.dto.UserDto;
 import com.chxxyx.projectfintech.user.entity.User;
@@ -51,7 +52,7 @@ public class UserService implements UserDetailsService {
 		return user;
 
 	}
-	public User login(UserDto parameter) {
+	public User login(UserLoginDto parameter) {
 		User user = userRepository.findByUsername(parameter.getUsername())
 			.orElseThrow(() -> new RuntimeException("존재 하지 않는 ID 입니다."));
 
