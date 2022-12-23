@@ -1,5 +1,6 @@
 package com.chxxyx.projectfintech.account.service;
 
+import static com.chxxyx.projectfintech.account.type.AccountError.USER_NOT_FOUND;
 import static com.chxxyx.projectfintech.account.type.AccountStatus.IN_USE;
 import static com.chxxyx.projectfintech.account.type.AccountStatus.UNREGISTERED;
 
@@ -13,6 +14,9 @@ import com.chxxyx.projectfintech.account.type.AccountStatus;
 import com.chxxyx.projectfintech.user.entity.User;
 import com.chxxyx.projectfintech.user.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -34,7 +38,7 @@ public class AccountService {
 
 		// 해당 유저가 회원가입이 되어있는 유저인지 먼저 확인 (로그인 한 회원만 계좌 서비스 이용 가능)
 		User accountUser = userRepository.findByUsername(username)
-			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
+			.orElseThrow(() -> new AccountException(USER_NOT_FOUND));
 
 		validateCreateAccount(accountUser);
 
@@ -64,7 +68,7 @@ public class AccountService {
 	@Transactional
 	public AccountDto deleteAccount(String username, String password, String accountNumber, String accountPassword) {
 		User accountUser = userRepository.findByUsername(username)
-			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
+			.orElseThrow(() -> new AccountException(USER_NOT_FOUND));
 		Account account = accountRepository.findByAccountNumber(accountNumber)
 			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
 		
@@ -85,5 +89,19 @@ public class AccountService {
 		if (account.getAccountStatus() == UNREGISTERED) {
 			throw new AccountException(AccountError.ACCOUNT_ALREADY_UNREGISTERED);
 		}
+	}
+
+	@Transactional
+	public List<AccountDto> getAccountsByUserId(UUID userId) {
+		User accountUser = userRepository.findById(userId)
+			.orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+
+		List<Account> accounts = accountRepository
+			.findByAccountUser(accountUser);
+
+		// dto 타입으로 바꿔주기
+		return accounts.stream()
+			.map(AccountDto::fromEntity)
+			.collect(Collectors.toList());
 	}
 }
