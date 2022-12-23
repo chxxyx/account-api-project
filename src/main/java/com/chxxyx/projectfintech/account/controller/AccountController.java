@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class AccountController {
+
 	private final AccountService accountService;
 
 	@PostMapping("/account/create")
@@ -33,8 +34,9 @@ public class AccountController {
 				request.getAccountPassword(),
 				request.getBalance()));
 	}
+
 	@DeleteMapping("/account/delete")
-	public DeleteAccount.Response deleteAccount(@RequestBody @Valid DeleteAccount.Request request){
+	public DeleteAccount.Response deleteAccount(@RequestBody @Valid DeleteAccount.Request request) {
 
 		return DeleteAccount.Response.from(
 			accountService.deleteAccount(

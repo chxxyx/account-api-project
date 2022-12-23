@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Controller
 public class UserController {
+
 	private final UserService userService;
+
 	@GetMapping("/user/register")
 	public String userRegister(UserDto userDto) {
 

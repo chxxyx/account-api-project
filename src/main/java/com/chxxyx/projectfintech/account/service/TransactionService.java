@@ -37,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
+
 	private final TransactionRepository transactionRepository;
 	private final UserRepository userRepository;
 	private final AccountRepository accountRepository;
@@ -45,7 +46,7 @@ public class TransactionService {
 
 	@Transactional
 	public TransactionDto depositBalance(String username, String password, String accountNumber,
-										 String accountPassword, Long amount){
+		String accountPassword, Long amount) {
 		User user = userRepository.findByUsername(username)
 			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
 		Account account = accountRepository.findByAccountNumber(accountNumber)
@@ -65,22 +66,24 @@ public class TransactionService {
 			throw new AccountException(AccountError.ACCOUNT_ALREADY_UNREGISTERED);
 		}
 	}
+
 	@Transactional
 	public void saveFailedDepositTransaction(String accountNumber, Long amount) {
 		Account account = accountRepository.findByAccountNumber(accountNumber)
-			.orElseThrow(()-> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
+			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
 
 		saveAndGetTransaction(DEPOSIT, FAIL, account, amount);
 	}
+
 	@Transactional
 	public TransactionDto withdrawBalance(String username, String password, String accountNumber,
-											String accountPassword, Long amount){
+		String accountPassword, Long amount) {
 
 		User user = userRepository.findByUsername(username) // 사용자 조회
 			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
 
 		Account account = accountRepository.findByAccountNumber(accountNumber) // 계좌 조회
-			.orElseThrow(()-> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
+			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
 
 		checkAccountPassword(account, accountPassword);
 		validateWithdrawBalance(user, account, amount);
@@ -104,12 +107,14 @@ public class TransactionService {
 	@Transactional
 	public void saveFailedWithdrawTransaction(String accountNumber, Long amount) {
 		Account account = accountRepository.findByAccountNumber(accountNumber)
-			.orElseThrow(()-> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
+			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
 		saveAndGetTransaction(WITHDRAW, FAIL, account, amount);
 	}
+
 	@Transactional
-	public TransferDto transferBalance(String username, String password, String senderName, String senderAccountNumber,
-											String accountPassword, String receiverName, String receiverAccountNumber, Long amount){
+	public TransferDto transferBalance(String username, String password, String senderName,
+		String senderAccountNumber, String accountPassword, String receiverName,
+		String receiverAccountNumber, Long amount) {
 
 		Account senderAccount = validateSenderBalance(username, senderAccountNumber, amount);
 		checkAccountPassword(senderAccount, accountPassword);
@@ -119,22 +124,19 @@ public class TransactionService {
 		User receiverUser = userRepository.findByName(receiverName)
 			.orElseThrow(() -> new AccountException(AccountError.USER_ACCOUNT_UN_MATCH));
 
-		Account receiverAccount =  accountRepository.findByAccountNumber(receiverAccountNumber)
+		Account receiverAccount = accountRepository.findByAccountNumber(receiverAccountNumber)
 			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
 
 		validateReceiverBalance(receiverAccount);
 		receiverAccount.deposit(amount);
 		saveAndGetTransaction(DEPOSIT, SUCCESS, receiverAccount, amount);
 
-		return TransferDto.fromEntity(transferRepository.save(
-			Transfer.builder()
-				.transaction(saveAndGetTransaction(REMIT, SUCCESS, senderAccount, amount))
-				.senderName(senderAccount.getAccountUser().getName())
-				.senderAccountNumber(senderAccount.getAccountNumber())
-				.receiverName(receiverUser.getName())
-				.receiverAccountNumber(receiverAccount.getAccountNumber())
-				.build()
-			)
+		return TransferDto.fromEntity(transferRepository.save(Transfer.builder()
+			.transaction(saveAndGetTransaction(REMIT, SUCCESS, senderAccount, amount))
+			.senderName(senderAccount.getAccountUser().getName())
+			.senderAccountNumber(senderAccount.getAccountNumber())
+			.receiverName(receiverUser.getName())
+			.receiverAccountNumber(receiverAccount.getAccountNumber()).build())
 
 		);
 	}
@@ -160,6 +162,7 @@ public class TransactionService {
 		}
 		return senderAccount;
 	}
+
 	private void validateReceiverBalance(Account account) {
 		// 계좌가 해지된 상태일 때
 		if (account.getAccountStatus() != AccountStatus.IN_USE) {
@@ -170,25 +173,16 @@ public class TransactionService {
 	@Transactional
 	public void saveFailedTransfer(String account, Long amount) {
 		Account sencerAccount = accountRepository.findByAccountNumber(account)
-			.orElseThrow(()-> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
+			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
 		saveAndGetTransaction(REMIT, FAIL, sencerAccount, amount);
 	}
 
 	// 코드 중복 최소화, 저장하는 부분 공통화
-	private Transaction saveAndGetTransaction(
-		TransactionType transactionType,
-		TransactionResultType transactionResultType,
-		Account account,
-		Long amount) {
-		return transactionRepository.save(
-			Transaction.builder()
-				.transactionType(transactionType)
-				.transactionResultType(transactionResultType)
-				.account(account)
-				.amount(amount)
-				.balanceSnapshot(account.getBalance())
-				.transactedAt(LocalDateTime.now())
-				.build());
+	private Transaction saveAndGetTransaction(TransactionType transactionType,
+		TransactionResultType transactionResultType, Account account, Long amount) {
+		return transactionRepository.save(Transaction.builder().transactionType(transactionType)
+			.transactionResultType(transactionResultType).account(account).amount(amount)
+			.balanceSnapshot(account.getBalance()).transactedAt(LocalDateTime.now()).build());
 	}
 
 	private void checkAccountPassword(Account account, String accountPassword) {
@@ -198,8 +192,8 @@ public class TransactionService {
 	}
 
 	// 거래내역 조회
-	public List<TransactionDto> getTransactionList(String username, String password, String accountNumber
-										, String accountPassword, LocalDate startDate, LocalDate endDate) {
+	public List<TransactionDto> getTransactionList(String username, String password,
+		String accountNumber, String accountPassword, LocalDate startDate, LocalDate endDate) {
 
 		User user = userRepository.findByUsername(username)
 			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
@@ -211,11 +205,11 @@ public class TransactionService {
 		LocalDateTime startDt = startDate.atStartOfDay();
 		LocalDateTime endDt = endDate.atTime(LocalTime.MAX);
 
-		List<Transaction> transactionList =
-			transactionRepository.findAllByAccount_AccountNumberAndTransactedAtBetween(accountNumber, startDt, endDt);
+		List<Transaction> transactionList = transactionRepository.findAllByAccount_AccountNumberAndTransactedAtBetween(
+			accountNumber, startDt, endDt);
 
 		List<TransactionDto> transactionDtoList = new ArrayList<>();
-		for (Transaction transaction: transactionList) {
+		for (Transaction transaction : transactionList) {
 			transactionDtoList.add(TransactionDto.fromEntity(transaction));
 		}
 		return transactionDtoList;
