@@ -20,6 +20,8 @@ public class AccountDto {
 	private String accountNumber;
 	private Long balance;
 	private String username;
+	private String accountPassword;
+	private String name;
 
 	private LocalDateTime registeredAt;
 	private LocalDateTime unRegisteredAt;
@@ -27,6 +29,8 @@ public class AccountDto {
 		return AccountDto.builder()
 			.username(account.getAccountUser().getUsername())
 			.accountNumber(account.getAccountNumber())
+			.accountPassword(account.getAccountPassword())
+			.name(account.getAccountUser().getName())
 			.balance(account.getBalance())
 			.registeredAt(account.getRegisteredAt())
 			.unRegisteredAt(account.getUnRegisteredAt())
