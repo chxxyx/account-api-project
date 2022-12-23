@@ -1,5 +1,6 @@
 package com.chxxyx.projectfintech.account.dto;
 
+import com.chxxyx.projectfintech.account.type.TransactionType;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -60,6 +61,7 @@ public class TransferBalance {
 		private String receiverName;
 		private String receiverAccountNumber;
 		private Long amount;
+		private TransactionType transactionType;
 		private LocalDateTime transactedAt;
 
 		public static Response from(TransferDto transferDto){
@@ -69,6 +71,7 @@ public class TransferBalance {
 				.receiverName(transferDto.getReceiverName())
 				.receiverAccountNumber(transferDto.getReceiverAccountNumber())
 				.amount(transferDto.getAmount())
+				.transactionType(transferDto.getTransactionType())
 				.transactedAt(transferDto.getTransactedAt())
 				.build();
 		}

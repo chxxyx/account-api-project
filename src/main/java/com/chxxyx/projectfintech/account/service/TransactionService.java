@@ -20,9 +20,16 @@ import com.chxxyx.projectfintech.account.type.TransactionResultType;
 import com.chxxyx.projectfintech.account.type.TransactionType;
 import com.chxxyx.projectfintech.user.entity.User;
 import com.chxxyx.projectfintech.user.repository.UserRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +41,7 @@ public class TransactionService {
 	private final UserRepository userRepository;
 	private final AccountRepository accountRepository;
 	private final TransferRepository transferRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
 	public TransactionDto depositBalance(String username, String password, String accountNumber,
@@ -42,7 +50,7 @@ public class TransactionService {
 			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
 		Account account = accountRepository.findByAccountNumber(accountNumber)
 			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
-
+		checkAccountPassword(account, accountPassword);
 		validateDepositBalance(user, account);
 		account.deposit(amount);
 
@@ -74,8 +82,8 @@ public class TransactionService {
 		Account account = accountRepository.findByAccountNumber(accountNumber) // 계좌 조회
 			.orElseThrow(()-> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
 
+		checkAccountPassword(account, accountPassword);
 		validateWithdrawBalance(user, account, amount);
-
 		account.withdraw(amount);
 
 		return TransactionDto.fromEntity(saveAndGetTransaction(WITHDRAW, SUCCESS, account, amount));
@@ -104,6 +112,8 @@ public class TransactionService {
 											String accountPassword, String receiverName, String receiverAccountNumber, Long amount){
 
 		Account senderAccount = validateSenderBalance(username, senderAccountNumber, amount);
+		checkAccountPassword(senderAccount, accountPassword);
+
 		senderAccount.withdraw(amount);
 
 		User receiverUser = userRepository.findByName(receiverName)
@@ -179,5 +189,35 @@ public class TransactionService {
 				.balanceSnapshot(account.getBalance())
 				.transactedAt(LocalDateTime.now())
 				.build());
+	}
+
+	private void checkAccountPassword(Account account, String accountPassword) {
+		if (!passwordEncoder.matches(accountPassword, account.getAccountPassword())) {
+			throw new AccountException(AccountError.ACCOUNT_PASSWORD_NOT_SAME);
+		}
+	}
+
+	// 거래내역 조회
+	public List<TransactionDto> getTransactionList(String username, String password, String accountNumber
+										, String accountPassword, LocalDate startDate, LocalDate endDate) {
+
+		User user = userRepository.findByUsername(username)
+			.orElseThrow(() -> new AccountException(AccountError.USER_NOT_FOUND));
+		Account account = accountRepository.findByAccountNumber(accountNumber)
+			.orElseThrow(() -> new AccountException(AccountError.ACCOUNT_NOT_FOUND));
+
+		checkAccountPassword(account, accountPassword);
+
+		LocalDateTime startDt = startDate.atStartOfDay();
+		LocalDateTime endDt = endDate.atTime(LocalTime.MAX);
+
+		List<Transaction> transactionList =
+			transactionRepository.findAllByAccount_AccountNumberAndTransactedAtBetween(accountNumber, startDt, endDt);
+
+		List<TransactionDto> transactionDtoList = new ArrayList<>();
+		for (Transaction transaction: transactionList) {
+			transactionDtoList.add(TransactionDto.fromEntity(transaction));
+		}
+		return transactionDtoList;
 	}
 }
