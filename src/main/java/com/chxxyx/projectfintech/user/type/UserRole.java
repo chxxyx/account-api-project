@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 public enum UserRole {
 	ROLE_ADMIN("관리자"),
-	ROLE_USER("사용자");
+	ROLE_USER("회원"),
+	ROLE_NOT_USER("탈퇴 회원");
 
 	UserRole(String value) {
 		this.value = value;
