@@ -12,12 +12,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AccountException extends RuntimeException{
+public class AccountException extends RuntimeException {
+
 	private AccountError error;
 	private String errorMessage;
 
 	public AccountException(AccountError error) {
+		super(error.getDescription());
 		this.error = error;
-		this.errorMessage = error.getDescription();
 	}
 }

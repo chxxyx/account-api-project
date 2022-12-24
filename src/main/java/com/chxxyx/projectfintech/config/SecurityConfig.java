@@ -30,33 +30,24 @@ public class SecurityConfig {
 	@Bean
 	public WebSecurityCustomizer configure() {
 
-		return (web) -> web.ignoring()
-			.antMatchers("/ignore1");
+		return (web) -> web.ignoring().antMatchers("/ignore1");
 	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http
-			//.httpBasic().disable()
-			.cors().disable()
-			.csrf().disable(); // csrf 토큰 비활성화
-//		http    .headers().frameOptions().sameOrigin();
+			.cors().disable().csrf().disable(); // csrf 토큰 비활성화
 
-		http
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-			.authorizeRequests().antMatchers("/",
-				"/user/register", "/user/login").permitAll() /// permitAll(모든 접근 가능 )
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+			.authorizeRequests().antMatchers("/", "/user/register", "/user/login")
+			.permitAll() /// permitAll(모든 접근 가능 )
 
 			// 관리자
-			.antMatchers("/admin/**")
-			.hasRole("ADMIN")
-			.antMatchers("/user/**","/account/**","/transaction/**")
-			.hasRole("USER")
-
-			.anyRequest()
+			.antMatchers("/admin/**").hasRole("ADMIN")
+			.antMatchers("/user/**", "/account/**", "/transaction/**").hasRole("USER").anyRequest()
 			.authenticated();
+
 		//JwtFilter 추가
 		http.addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -66,11 +57,6 @@ public class SecurityConfig {
 	@Bean
 	public static PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	UserAuthenticationFailureHandler getFailureHandler() {
-		return new UserAuthenticationFailureHandler();
 	}
 
 }

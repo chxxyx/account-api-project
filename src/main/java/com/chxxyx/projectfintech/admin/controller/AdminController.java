@@ -6,6 +6,7 @@ import com.chxxyx.projectfintech.user.dto.UserInfo;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ public class AdminController {
 
 	// 회원 정보 조회
 	@GetMapping("/admin/userInfo")
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<UserInfo> getUserInfo() {
 
 		return adminService.getUserInfo().stream().map(
@@ -28,6 +30,7 @@ public class AdminController {
 
 	// 회원 계좌 정보 조회
 	@GetMapping("/admin/userAccountInfo")
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<UserAccountInfo> getUserAccountInfo() {
 
 		return adminService.getUserAccountInfo().stream().map(
