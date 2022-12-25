@@ -57,6 +57,7 @@ public class AdminController {
 
 	// 회원 계좌 상태 변경
 	@PostMapping("/admin/account/changeStatus")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ChangeAccountStatus.Response changeAccountStatus(
 		@RequestBody @Valid ChangeAccountStatus.Request request) {
 
