@@ -46,7 +46,7 @@ public class AdminController {
 	}
 
 	// 회원 상태 변경
-	@PostMapping("/admin/user/change")
+	@PostMapping("/admin/user/changeType")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ChangeUserType.Response changeUserType(
 		@RequestBody @Valid ChangeUserType.Request request) {
@@ -56,7 +56,7 @@ public class AdminController {
 	}
 
 	// 회원 계좌 상태 변경
-	@PostMapping("/admin/account/change")
+	@PostMapping("/admin/account/changeStatus")
 	public ChangeAccountStatus.Response changeAccountStatus(
 		@RequestBody @Valid ChangeAccountStatus.Request request) {
 

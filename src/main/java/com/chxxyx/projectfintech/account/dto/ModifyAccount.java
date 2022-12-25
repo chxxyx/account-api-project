@@ -42,6 +42,7 @@ public class ModifyAccount {
 		private String username;
 		private String accountNumber;
 		private String accountPassword;
+
 		public static Response from(AccountDto accountDto) {
 
 			return Response.builder().username(accountDto.getUsername())
