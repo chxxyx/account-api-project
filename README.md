@@ -1,5 +1,7 @@
-# Fintech Project - 요구사항 정의서 
+# FinTech Project - 요구사항 정의서 
 <br>
+사용자 계좌에서 잔액 인출 및 입금과 더불어 타 계좌로 송금을 할 수 있는 거래 관리 시스템. <br>
+사용자와 계좌 정보를 저장하며, 사용자의 거래 및 정보 확인 기능 제공.
 
 ## ERD
 <img width="1120" alt="스크린샷 2022-12-24 오후 11 22 39" src="https://user-images.githubusercontent.com/97508297/209463223-2872d41e-0739-44ce-b264-f879764a6652.png">
