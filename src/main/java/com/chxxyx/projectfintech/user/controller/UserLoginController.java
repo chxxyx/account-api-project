@@ -2,6 +2,7 @@ package com.chxxyx.projectfintech.user.controller;
 
 import com.chxxyx.projectfintech.config.TokenProvider;
 import com.chxxyx.projectfintech.user.dto.UserDto;
+import com.chxxyx.projectfintech.user.dto.UserLoginDto;
 import com.chxxyx.projectfintech.user.entity.User;
 import com.chxxyx.projectfintech.user.service.UserService;
 import com.chxxyx.projectfintech.user.type.UserRole;
@@ -19,19 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class UserLoginController {
+
 	private final UserService userService;
 	private final TokenProvider tokenProvider;
 
 	// 로그인
-	@PostMapping( "/user/login")
-	public String login(@RequestBody @Valid UserDto userDto, HttpServletResponse response) {
+	@PostMapping("/user/login")
+	public String login(@RequestBody @Valid UserLoginDto userLoginDto,
+		HttpServletResponse response) {
 
-		log.debug(userDto.getUsername());
-		User user = userService.login(userDto);
+		log.debug(userLoginDto.getUsername());
+		User user = userService.login(userLoginDto);
 		String username = user.getUsername();
 		UserRole role = user.getRole();
 		String token = tokenProvider.generatedToken(username, role);
-		log.info("user role : "+user.getRole());
+		log.info("user role : " + user.getRole());
 		response.setHeader("JWT", token);
 
 		return token;

@@ -16,6 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class TransactionDto {
+
 	private String accountNumber;
 	private TransactionType transactionType;
 	private TransactionResultType transactionResultType;

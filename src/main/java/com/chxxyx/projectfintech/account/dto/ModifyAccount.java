@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class CreateAccount {
+public class ModifyAccount {
 
 	@Getter
 	@Setter
@@ -24,9 +24,11 @@ public class CreateAccount {
 		@NotBlank
 		private String password;
 		@NotBlank
+		private String accountNumber;
+		@NotBlank
 		private String accountPassword;
-		@NotNull
-		private Long balance;
+		@NotBlank
+		private String accountRePassword;
 
 	}
 
@@ -39,13 +41,13 @@ public class CreateAccount {
 
 		private String username;
 		private String accountNumber;
-		private LocalDateTime registeredAt;
+		private String accountPassword;
 
 		public static Response from(AccountDto accountDto) {
 
 			return Response.builder().username(accountDto.getUsername())
 				.accountNumber(accountDto.getAccountNumber())
-				.registeredAt(accountDto.getRegisteredAt()).build();
+				.accountPassword(accountDto.getAccountPassword()).build();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package com.chxxyx.projectfintech.account.dto;
 
 import com.chxxyx.projectfintech.account.entity.Transfer;
+import com.chxxyx.projectfintech.account.type.TransactionType;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,8 @@ public class TransferDto {
 
 	private LocalDateTime transactedAt;
 
+	private TransactionType transactionType;
+
 	private Long amount;
 
 	public static TransferDto fromEntity(Transfer transfer) {
@@ -33,6 +36,7 @@ public class TransferDto {
 			.receiverName(transfer.getReceiverName())
 			.receiverAccountNumber(transfer.getReceiverAccountNumber())
 			.transactedAt(transfer.getTransaction().getTransactedAt())
+			.transactionType(transfer.getTransaction().getTransactionType())
 			.build();
 	}
 }
