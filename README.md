@@ -33,7 +33,7 @@
 
 
 <details>
-<summary> 회원가입과 로그인 </summary>
+<summary> 회원 관리 API </summary>
 <div markdown="1">    
 
 
