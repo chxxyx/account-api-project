@@ -177,3 +177,13 @@
 
 </div>
 </details>
+
+<details>
+<summary> 관리자 CRUD ( 미구현 )</summary>
+<div markdown="1">   
+
+    - 관리자 목록을 조회를 통해 관리자 추가와 삭제가 가능하다.
+        - 관리자 아이디, 이름, 비밀번호 등의 정보 조회 할 수 있다.
+</div>
+</details>
+
