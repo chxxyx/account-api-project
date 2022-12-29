@@ -6,6 +6,9 @@
 ## 개발 기간
 22/11/21 ~ 22/12/25
 
+## 프로젝트 구조
+<img width="524" alt="스크린샷 2022-12-29 오후 3 24 39" src="https://user-images.githubusercontent.com/97508297/209941061-2279604a-e2bb-4fc9-94d7-d50bc9b266b4.png">
+
 ## ERD
 <img width="1120" alt="스크린샷 2022-12-24 오후 11 22 39" src="https://user-images.githubusercontent.com/97508297/209463223-2872d41e-0739-44ce-b264-f879764a6652.png">
 
@@ -15,7 +18,7 @@
 - Java
 - MariaDB
 - JPA
-- JWT
+- Redis
 
 ## 프로젝트 기능
 
