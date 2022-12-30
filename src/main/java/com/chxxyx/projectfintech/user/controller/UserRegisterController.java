@@ -23,7 +23,7 @@ public class UserRegisterController {
 	private final UserService userService;
 
 	@PostMapping("/user/register")
-	public RegisterUser.Response userRegister(@RequestBody RegisterUser.Request request) {
+	public RegisterUser.Response userRegister(@RequestBody @Valid RegisterUser.Request request) {
 
 		log.info("::::::::::" + request.getSsn());
 		log.info("::::::::::" + request.getUsername());
