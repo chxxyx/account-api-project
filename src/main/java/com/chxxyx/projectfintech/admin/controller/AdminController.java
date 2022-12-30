@@ -27,7 +27,7 @@ public class AdminController {
 	public List<UserInfo> getUserInfo() {
 
 		return adminService.getUserInfo().stream().map(
-			userDto -> UserInfo.builder().SSN(userDto.getSSN()).name(userDto.getName())
+			userDto -> UserInfo.builder().SSN(userDto.getSsn()).name(userDto.getName())
 				.username(userDto.getUsername()).password(userDto.getPassword())
 				.createdAt(userDto.getCreatedAt()).modifiedAt(userDto.getModifiedAt())
 				.role(userDto.getRole()).build()).collect(Collectors.toList());
