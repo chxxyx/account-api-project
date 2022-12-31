@@ -1,6 +1,9 @@
 package com.chxxyx.projectfintech.user.service;
 
-import com.chxxyx.projectfintech.user.dto.UserLoginDto;
+import com.chxxyx.projectfintech.user.dto.LoginUser;
+import com.chxxyx.projectfintech.user.dto.RegisterUser;
+import com.chxxyx.projectfintech.user.exception.UserError;
+import com.chxxyx.projectfintech.user.exception.UserException;
 import com.chxxyx.projectfintech.user.repository.UserRepository;
 import com.chxxyx.projectfintech.user.dto.UserDto;
 import com.chxxyx.projectfintech.user.entity.User;
@@ -27,32 +30,24 @@ public class UserService implements UserDetailsService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	public User userRegister(UserDto parameter) {
-		Optional<User> optionalUser = userRepository.findByUsername(parameter.getUsername());
+	public UserDto registerUser(String username, String password, String ssn, String name) {
+		Optional<User> optionalUser = userRepository.findByUsername(username);
 
-		if(optionalUser.isPresent()) {
+		if (optionalUser.isPresent()) {
 			// 현재 userid에 해당하는 데이터가 존재ㅣ
-			throw new RuntimeException("이미 사용 중인 아이디 입니다.");
+			throw new UserException(UserError.USER_ALREADY_REGISTER);
 		}
 
-		String encPassword = BCrypt.hashpw(parameter.getPassword(), BCrypt.gensalt());
-		String encSSN = BCrypt.hashpw(parameter.getSSN(), BCrypt.gensalt());
+		String encPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+		String encSSN = BCrypt.hashpw(ssn, BCrypt.gensalt());
 
-		User user = User.builder()
-			.id(UUID.randomUUID())
-			.SSN(encSSN)
-			.name(parameter.getName())
-			.password(encPassword)
-			.createdAt(LocalDateTime.now())
-			.username(parameter.getUsername())
-			.role(UserRole.ROLE_USER)
-			.build();
-		userRepository.save(user);
-
-		return user;
+		return UserDto.fromEntity(userRepository.save(
+			User.builder().username(username).password(encPassword).SSN(encSSN).name(name)
+				.createdAt(LocalDateTime.now()).role(UserRole.ROLE_USER).build()));
 
 	}
-	public User login(UserLoginDto parameter) {
+
+	public User login(LoginUser parameter) {
 		User user = userRepository.findByUsername(parameter.getUsername())
 			.orElseThrow(() -> new RuntimeException("존재 하지 않는 ID 입니다."));
 
@@ -73,11 +68,12 @@ public class UserService implements UserDetailsService {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-		if(UserRole.ROLE_ADMIN.equals(user.getRole())) {
+		if (UserRole.ROLE_ADMIN.equals(user.getRole())) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
 
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+		return new org.springframework.security.core.userdetails.User(user.getUsername(),
+			user.getPassword(), authorities);
 	}
 
 }

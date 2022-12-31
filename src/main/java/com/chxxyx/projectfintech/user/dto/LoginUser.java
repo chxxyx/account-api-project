@@ -1,10 +1,8 @@
 package com.chxxyx.projectfintech.user.dto;
 
 import com.chxxyx.projectfintech.user.type.UserRole;
-import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class UserLoginDto {
+public class LoginUser {
 
 	@NotBlank(message = "사용자 ID는 필수 항목입니다.")
 	@Pattern(regexp = "[a-zA-Z0-9]{4,9}",
