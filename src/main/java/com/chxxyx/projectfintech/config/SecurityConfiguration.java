@@ -46,6 +46,8 @@ public class SecurityConfiguration {
 			.antMatchers("/user/**", "/account/**", "/transaction/**").hasRole("USER").anyRequest()
 			.authenticated();
 
+
+
 		//JwtFilter 추가
 		http.addFilterBefore(this.authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

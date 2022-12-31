@@ -25,9 +25,6 @@ public class UserRegisterController {
 	@PostMapping("/user/register")
 	public RegisterUser.Response userRegister(@RequestBody @Valid RegisterUser.Request request) {
 
-		log.info("::::::::::" + request.getSsn());
-		log.info("::::::::::" + request.getUsername());
-		log.info("::::::::::" + request.getPassword());
 		log.info("::::::::::" + request);
 
 		return RegisterUser.Response.from(
