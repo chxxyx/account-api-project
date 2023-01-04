@@ -1,5 +1,6 @@
 package com.chxxyx.projectfintech.account.service;
 
+import static com.chxxyx.projectfintech.account.type.AccountError.ACCOUNT_UNDER_BALANCE;
 import static com.chxxyx.projectfintech.account.type.AccountError.USER_NOT_FOUND;
 import static com.chxxyx.projectfintech.account.type.AccountStatus.IN_USE;
 import static com.chxxyx.projectfintech.account.type.AccountStatus.UNREGISTERED;
@@ -43,6 +44,10 @@ public class AccountService {
 		// 해당 유저가 회원가입이 되어있는 유저인지 먼저 확인 (로그인 한 회원만 계좌 서비스 이용 가능)
 		User accountUser = userRepository.findByUsername(username)
 			.orElseThrow(() -> new AccountException(USER_NOT_FOUND));
+
+		if (balance <= 0) {
+			throw new AccountException(ACCOUNT_UNDER_BALANCE);
+		}
 
 		validateCreateAccount(accountUser);
 
