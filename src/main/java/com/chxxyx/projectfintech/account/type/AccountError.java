@@ -14,7 +14,8 @@ public enum AccountError {
 	ACCOUNT_ALREADY_UNREGISTERED("이미 해지된 계좌입니다."),
 	INVALID_REQUEST("잘못된 요청입니다."),
 	TRANSACTION_NOT_FOUND("거래 내역을 찾을 수 없습니다."),
-	ACCOUNT_EXCEED_BALANCE("출금 금액이 계좌 잔액 보다 큽니다.");
+	ACCOUNT_EXCEED_BALANCE("출금 금액이 계좌 잔액 보다 큽니다."),
+	ACCOUNT_UNDER_BALANCE("입금 금액은 0보다 큰 금액만 입금 가능합니다.");
 
 	private final String description;
 }
