@@ -34,7 +34,7 @@ public class RegisterUser {
 		private String name; //유저 이름
 
 		@NotBlank(message = "사용자 주민 번호는 필수 항목입니다.")
-		@Pattern(regexp = "^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))-[1-4][0-9]{6}$", message = "주민번호는 숫자 13자리를 입력해주세요.")
+		@Pattern(regexp = "^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))-[1-4][0-9]{6}$", message = "주민번호는 13리를 입력해주세요.")
 		private String ssn;
 
 	}
