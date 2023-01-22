@@ -16,17 +16,19 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
+@RequestMapping("/account")
 @RequiredArgsConstructor
 public class AccountController {
 
 	private final AccountService accountService;
 
-	@PostMapping("/account/create")
+	@PostMapping("/create")
 	@PreAuthorize("hasRole('USER')")
 	public CreateAccount.Response createAccount(@RequestBody @Valid CreateAccount.Request request) {
 
@@ -35,7 +37,7 @@ public class AccountController {
 				request.getAccountPassword(), request.getBalance()));
 	}
 
-	@DeleteMapping("/account/delete")
+	@DeleteMapping("/delete")
 	@PreAuthorize("hasRole('USER')")
 	public DeleteAccount.Response deleteAccount(@RequestBody @Valid DeleteAccount.Request request) {
 
@@ -44,7 +46,7 @@ public class AccountController {
 				request.getAccountNumber(), request.getAccountPassword()));
 	}
 
-	@GetMapping("/account")
+	@GetMapping()
 	@PreAuthorize("hasRole('USER')")
 	public List<AccountInfo> getAccountByUserId(@RequestParam("user_id") UUID userId) {
 
@@ -54,7 +56,7 @@ public class AccountController {
 	}
 
 	// 계좌 정보 수정 (비밀 번호)
-	@PostMapping("/account/modify")
+	@PostMapping("/modify")
 	@PreAuthorize("hasRole('USER')")
 	public ModifyAccount.Response modifyAccountInfo(
 		@RequestBody @Valid ModifyAccount.Request request) {
