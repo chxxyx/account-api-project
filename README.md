@@ -10,7 +10,55 @@
 <img width="524" alt="스크린샷 2022-12-29 오후 3 24 39" src="https://user-images.githubusercontent.com/97508297/209941061-2279604a-e2bb-4fc9-94d7-d50bc9b266b4.png">
 
 ## ERD
-<img width="1120" alt="스크린샷 2022-12-24 오후 11 22 39" src="https://user-images.githubusercontent.com/97508297/209463223-2872d41e-0739-44ce-b264-f879764a6652.png">
+<img width="712" alt="스크린샷 2023-01-28 오전 1 19 00" src="https://user-images.githubusercontent.com/97508297/215273546-6efd079f-c5a9-4fc9-83f9-1c590b4e6e6b.png">
+
+**User**
+
+| id | binary(16) | PK |
+| --- | --- | --- |
+| ssn | varchar | 주민번호 |
+| username | varchar | 아이디 |
+| password | varchar | 비밀번호 |
+| name | varchar | 이름 |
+| role | varchar | 회원 타입(권한) |
+| created_at | datetime(6) | 생성일 |
+| modified_at | datetime(6) | 수정일 |
+
+**Account**
+
+| account_number | varchar | PK |
+| --- | --- | --- |
+| user_id | binary(16) | FK |
+| account_password | varchar | 계좌 비밀번호 |
+| balance | bingint(20) | 계좌 잔액 |
+| account_status | varchar | 계좌 상태 |
+| created_at | datetime(6) | 계좌 생성일 |
+| modified_at | datetime(6) | 계좌 수정일 |
+| registerd_at | datetime(6) | 계좌 등록일 |
+| unRegisterd_at | datetime(6) | 계좌 정지일 |
+
+**Transaction (거래 테이블 - 입금, 출금)**
+
+| id | bigint(20) | PK |
+| --- | --- | --- |
+| account_accountNumber | varchar | FK |
+| amount | bigint(20) | 거래 금액 |
+| balance_snapshot | bigint(20) | 잔액 |
+| created_at | datetime(6) | 거래 생성일 |
+| updated_at | datetime(6) | 거래 수정일 |
+| transated_at | datetime(6) | 거래 날짜 |
+| transaction_result_type | varchar | 거래 성공 여부 |
+| transaction_type | varchar | 거래 타입 |
+
+**Transfer (송금 테이블)**
+
+| id | bigint(20) | PK |
+| --- | --- | --- |
+| transaction | bigint(20) | FK |
+| sender_name | varchar | 송금 유저 |
+| sender_account_number | varchar | 송금 유저 계좌 |
+| receiver_name | varchar | 송금 받는 유저 |
+| receiver_account_number | varchar | 송금 받을 계좌 |
 
 ## 사용 기술스택
 
