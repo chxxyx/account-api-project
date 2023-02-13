@@ -2,7 +2,7 @@ package com.chxxyx.projectfintech;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.chxxyx.projectfintech.config.JasyptConfig;
+import com.chxxyx.projectfintech.config.security.JasyptConfig;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,9 @@ public class EncryptionApplicationTest extends JasyptConfig {
 
 	    // when
 		String encryptedURL = jasyptEncrypt(mariaDB_URL);
+		String encryptedURL2 = jasyptEncrypt(mariaDB_URL);
 		System.out.println("DB URL 암호화 된 값 :::: " + encryptedURL);
+		System.out.println("DB URL 암호화 된 값 :::: " + encryptedURL2);
 
 		String encrypteduserName = jasyptEncrypt(mariaDB_userName);
 		System.out.println("DB userName 암호화 된 값 :::: " + encrypteduserName);
@@ -30,6 +32,7 @@ public class EncryptionApplicationTest extends JasyptConfig {
 		System.out.println("jwt token key 암호화 된 값 :::: " + encryptedJwtTokenKey);
 
 		System.out.println("url 복호화 :::::::: " + jasyptDecrypt(encryptedURL));
+		System.out.println("url 복호화 :::::::: " + jasyptDecrypt(encryptedURL2));
 		System.out.println("name 복호화 :::::::: " + jasyptDecrypt(encrypteduserName));
 		System.out.println("pw 복호화 :::::::: " + jasyptDecrypt(encryptedPw));
 		System.out.println("jwt 복호화 :::::::: " + jasyptDecrypt(encryptedJwtTokenKey));
@@ -41,6 +44,7 @@ public class EncryptionApplicationTest extends JasyptConfig {
 		assertThat(jwtTokenKey).isEqualTo(jasyptDecrypt(encryptedJwtTokenKey));
 
 	}
+
 
 	private String jasyptEncrypt(String input) {
 		String key = "5678";
