@@ -1,4 +1,4 @@
-package com.chxxyx.projectfintech.domain.account.dto;
+package com.chxxyx.projectfintech.domain.account.model;
 
 import com.chxxyx.projectfintech.domain.account.type.TransactionResultType;
 import java.time.LocalDateTime;

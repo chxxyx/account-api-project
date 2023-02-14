@@ -1,4 +1,4 @@
-package com.chxxyx.projectfintech.domain.user.dto;
+package com.chxxyx.projectfintech.domain.user.model;
 
 import com.chxxyx.projectfintech.domain.user.type.UserRole;
 import javax.validation.constraints.NotBlank;

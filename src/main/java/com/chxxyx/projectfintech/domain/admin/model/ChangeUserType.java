@@ -1,6 +1,6 @@
-package com.chxxyx.projectfintech.domain.admin.dto;
+package com.chxxyx.projectfintech.domain.admin.model;
 
-import com.chxxyx.projectfintech.domain.user.dto.UserDto;
+import com.chxxyx.projectfintech.domain.user.model.UserDto;
 import com.chxxyx.projectfintech.domain.user.type.UserRole;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

@@ -1,12 +1,12 @@
 package com.chxxyx.projectfintech.domain.account.controller;
 
-import com.chxxyx.projectfintech.domain.account.dto.DepositBalance;
-import com.chxxyx.projectfintech.domain.account.dto.TransactionList;
-import com.chxxyx.projectfintech.domain.account.dto.TransferBalance;
-import com.chxxyx.projectfintech.domain.account.dto.WithdrawBalance;
+import com.chxxyx.projectfintech.domain.account.model.DepositBalance;
+import com.chxxyx.projectfintech.domain.account.model.TransactionList;
+import com.chxxyx.projectfintech.domain.account.model.TransferBalance;
+import com.chxxyx.projectfintech.domain.account.model.WithdrawBalance;
 import com.chxxyx.projectfintech.domain.account.exception.AccountException;
 import com.chxxyx.projectfintech.domain.account.service.TransactionService;
-import com.chxxyx.projectfintech.domain.account.dto.DepositBalance.Response;
+import com.chxxyx.projectfintech.domain.account.model.DepositBalance.Response;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,16 +16,18 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/transaction")
 public class TransactionController {
 
 	private final TransactionService transactionService;
 
-	@PostMapping("/transaction/deposit")
+	@PostMapping("/deposit")
 	@PreAuthorize("hasRole('USER')")
 	public Response depositBalance(
 		@RequestBody @Valid DepositBalance.Request request) {
@@ -40,7 +42,7 @@ public class TransactionController {
 		}
 	}
 
-	@PostMapping("/transaction/withdraw")
+	@PostMapping("/withdraw")
 	@PreAuthorize("hasRole('USER')")
 	public WithdrawBalance.Response withdrawBalance(
 		@RequestBody @Valid WithdrawBalance.Request request) {
@@ -56,7 +58,7 @@ public class TransactionController {
 		}
 	}
 
-	@PostMapping("/transaction/transfer")
+	@PostMapping("/transfer")
 	@PreAuthorize("hasRole('USER')")
 	public TransferBalance.Response transferBalance(
 		@RequestBody @Valid TransferBalance.Request request) {
@@ -73,7 +75,7 @@ public class TransactionController {
 		}
 	}
 
-	@GetMapping("/transaction/transactionList.do")
+	@GetMapping("/list")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> getTransactionList(
 		@RequestBody @Valid TransactionList.Request request) {

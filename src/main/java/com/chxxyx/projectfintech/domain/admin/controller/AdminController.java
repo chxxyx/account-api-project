@@ -1,29 +1,31 @@
 package com.chxxyx.projectfintech.domain.admin.controller;
 
-import com.chxxyx.projectfintech.domain.account.dto.UserAccountInfo;
-import com.chxxyx.projectfintech.domain.admin.dto.ChangeAccountStatus;
-import com.chxxyx.projectfintech.domain.admin.dto.ChangeUserType;
+import com.chxxyx.projectfintech.domain.account.model.UserAccountInfo;
+import com.chxxyx.projectfintech.domain.admin.model.ChangeAccountStatus;
+import com.chxxyx.projectfintech.domain.admin.model.ChangeUserType;
 import com.chxxyx.projectfintech.domain.admin.service.AdminService;
-import com.chxxyx.projectfintech.domain.admin.dto.ChangeAccountStatus.Response;
-import com.chxxyx.projectfintech.domain.user.dto.UserInfo;
+import com.chxxyx.projectfintech.domain.admin.model.ChangeAccountStatus.Response;
+import com.chxxyx.projectfintech.domain.user.model.UserInfo;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/admin")
 public class AdminController {
 
 	private final AdminService adminService;
 
 	// 회원 정보 조회
-	@GetMapping("/admin/user/Info")
+	@GetMapping("/user/Info")
 	@PreAuthorize("hasRole('ADMIN')")
 	public List<UserInfo> getUserInfo() {
 
@@ -35,7 +37,7 @@ public class AdminController {
 	}
 
 	// 회원 계좌 정보 조회
-	@GetMapping("/admin/account/Info")
+	@GetMapping("/account/Info")
 	@PreAuthorize("hasRole('ADMIN')")
 	public List<UserAccountInfo> getUserAccountInfo() {
 
@@ -47,7 +49,7 @@ public class AdminController {
 	}
 
 	// 회원 상태 변경
-	@PostMapping("/admin/user/changeType")
+	@PutMapping("/user/status")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ChangeUserType.Response changeUserType(
 		@RequestBody @Valid ChangeUserType.Request request) {
@@ -57,7 +59,7 @@ public class AdminController {
 	}
 
 	// 회원 계좌 상태 변경
-	@PostMapping("/admin/account/changeStatus")
+	@PutMapping("/account/status")
 	@PreAuthorize("hasRole('ADMIN')")
 	public Response changeAccountStatus(
 		@RequestBody @Valid ChangeAccountStatus.Request request) {

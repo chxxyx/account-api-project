@@ -1,4 +1,4 @@
-package com.chxxyx.projectfintech.domain.account.dto;
+package com.chxxyx.projectfintech.domain.account.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

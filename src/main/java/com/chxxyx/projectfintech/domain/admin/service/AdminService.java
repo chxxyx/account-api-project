@@ -1,14 +1,14 @@
 package com.chxxyx.projectfintech.domain.admin.service;
 
-import com.chxxyx.projectfintech.domain.account.dto.AccountDto;
+import com.chxxyx.projectfintech.domain.account.model.AccountDto;
 import com.chxxyx.projectfintech.domain.account.entity.Account;
 import com.chxxyx.projectfintech.domain.account.exception.AccountException;
 import com.chxxyx.projectfintech.domain.account.repository.AccountRepository;
 import com.chxxyx.projectfintech.domain.account.type.AccountError;
 import com.chxxyx.projectfintech.domain.account.type.AccountStatus;
-import com.chxxyx.projectfintech.domain.admin.dto.ChangeAccountStatus;
-import com.chxxyx.projectfintech.domain.admin.dto.ChangeAccountStatus.Response;
-import com.chxxyx.projectfintech.domain.user.dto.UserDto;
+import com.chxxyx.projectfintech.domain.admin.model.ChangeAccountStatus;
+import com.chxxyx.projectfintech.domain.admin.model.ChangeAccountStatus.Response;
+import com.chxxyx.projectfintech.domain.user.model.UserDto;
 import com.chxxyx.projectfintech.domain.user.entity.User;
 import com.chxxyx.projectfintech.domain.user.repository.UserRepository;
 import com.chxxyx.projectfintech.domain.user.type.UserRole;
@@ -42,7 +42,7 @@ public class AdminService {
 		Pageable limit = PageRequest.of(0, 10);
 		Page<Account> accounts = accountRepository.findAllByOrderByCreatedAtDesc(limit);
 
-		return accounts.stream().map(AccountDto::fromEntity).collect(Collectors.toList());
+		return accounts.stream().map(AccountDto::from).collect(Collectors.toList());
 	}
 
 	public UserDto changeUserType(String username, UserRole role) {

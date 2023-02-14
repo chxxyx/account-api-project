@@ -4,8 +4,8 @@ import static com.chxxyx.projectfintech.domain.account.type.TransactionType.DEPO
 import static com.chxxyx.projectfintech.domain.account.type.TransactionType.REMIT;
 import static com.chxxyx.projectfintech.domain.account.type.TransactionType.WITHDRAW;
 
-import com.chxxyx.projectfintech.domain.account.dto.TransactionDto;
-import com.chxxyx.projectfintech.domain.account.dto.TransferDto;
+import com.chxxyx.projectfintech.domain.account.model.TransactionDto;
+import com.chxxyx.projectfintech.domain.account.model.TransferDto;
 import com.chxxyx.projectfintech.domain.account.entity.Account;
 import com.chxxyx.projectfintech.domain.account.entity.Transaction;
 import com.chxxyx.projectfintech.domain.account.entity.Transfer;

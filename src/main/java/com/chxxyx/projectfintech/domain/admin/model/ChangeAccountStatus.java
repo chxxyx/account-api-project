@@ -1,4 +1,4 @@
-package com.chxxyx.projectfintech.domain.admin.dto;
+package com.chxxyx.projectfintech.domain.admin.model;
 
 import com.chxxyx.projectfintech.domain.account.entity.Account;
 import com.chxxyx.projectfintech.domain.account.type.AccountStatus;
