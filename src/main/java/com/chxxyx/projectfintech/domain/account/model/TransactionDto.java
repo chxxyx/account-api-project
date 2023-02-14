@@ -18,15 +18,17 @@ import lombok.Setter;
 public class TransactionDto {
 
 	private String accountNumber;
+	private Long transactionId;
 	private TransactionType transactionType;
 	private TransactionResultType transactionResultType;
 	private Long amount;
 	private Long balanceSnapshot;
 	private LocalDateTime transactedAt;
 
-	public static TransactionDto fromEntity(Transaction transaction) {
+	public static TransactionDto from(Transaction transaction) {
 		return TransactionDto.builder()
 			.accountNumber(transaction.getAccount().getAccountNumber())
+			.transactionId(transaction.getId())
 			.transactionType(transaction.getTransactionType())
 			.transactionResultType(transaction.getTransactionResultType())
 			.amount(transaction.getAmount())

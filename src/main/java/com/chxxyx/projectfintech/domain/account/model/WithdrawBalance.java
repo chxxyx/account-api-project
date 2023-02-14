@@ -20,11 +20,6 @@ public class WithdrawBalance {
 	public static class Request { //이너 클래스
 
 		@NotBlank
-		private String username;
-		@NotBlank
-		private String password;
-
-		@NotBlank
 		@Size(min = 10, max = 10)
 		private String accountNumber;
 

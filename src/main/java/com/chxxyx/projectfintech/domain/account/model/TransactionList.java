@@ -21,11 +21,6 @@ public class TransactionList {
 	public static class Request {
 
 		@NotBlank
-		private String username;
-		@NotBlank
-		private String password;
-
-		@NotBlank
 		@Size(min = 10, max = 10)
 		private String accountNumber;
 
@@ -48,15 +43,16 @@ public class TransactionList {
 	public static class Response {
 
 		private String accountNumber;
-		private TransactionType transactionType;
-		private Long transactionId;
 		private Long amount;
+		private Long transactionId;
+		private TransactionType transactionType;
 		private LocalDateTime transactedAt;
 
 		public static Response from(TransactionDto transactionDto) {
 			return Response.builder()
 				.accountNumber(transactionDto.getAccountNumber())
 				.amount(transactionDto.getAmount())
+				.transactionId(transactionDto.getTransactionId())
 				.transactionType(transactionDto.getTransactionType())
 				.transactedAt(transactionDto.getTransactedAt())
 				.build();

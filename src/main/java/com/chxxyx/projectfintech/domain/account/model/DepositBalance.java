@@ -22,11 +22,6 @@ public class DepositBalance {
 	public static class Request {
 
 		@NotBlank
-		private String username;
-		@NotBlank
-		private String password;
-
-		@NotBlank
 		@Size(min = 10, max = 10)
 		private String accountNumber;
 
