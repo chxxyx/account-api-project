@@ -1,6 +1,7 @@
-package com.chxxyx.projectfintech.domain.account.dto;
+package com.chxxyx.projectfintech.domain.account.model;
 
 import com.chxxyx.projectfintech.domain.account.entity.Account;
+import com.chxxyx.projectfintech.domain.account.type.AccountStatus;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,16 +23,18 @@ public class AccountDto {
 	private String username;
 	private String accountPassword;
 	private String name;
+	private AccountStatus accountStatus;
 
 	private LocalDateTime registeredAt;
 	private LocalDateTime unRegisteredAt;
-	public static AccountDto fromEntity(Account account) {
+	public static AccountDto from(Account account) {
 		return AccountDto.builder()
 			.username(account.getAccountUser().getUsername())
 			.accountNumber(account.getAccountNumber())
 			.accountPassword(account.getAccountPassword())
 			.name(account.getAccountUser().getName())
 			.balance(account.getBalance())
+			.accountStatus(account.getAccountStatus())
 			.registeredAt(account.getRegisteredAt())
 			.unRegisteredAt(account.getUnRegisteredAt())
 			.build();

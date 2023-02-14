@@ -1,5 +1,6 @@
-package com.chxxyx.projectfintech.domain.account.dto;
+package com.chxxyx.projectfintech.domain.account.model;
 
+import com.chxxyx.projectfintech.domain.account.type.AccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,5 +16,6 @@ public class AccountInfo {
 
 	private String accountNumber;
 	private Long balance;
+	private AccountStatus accountStatus;
 
 }

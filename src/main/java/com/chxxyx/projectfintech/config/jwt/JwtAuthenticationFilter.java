@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public static final String TOKEN_HEADER="Authorization";
     public static final String TOKEN_PREFIX="Bearer ";
-
 	private final TokenProvider tokenProvider;
 
 	@Override
@@ -31,8 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		if (StringUtils.hasText(token) && this.tokenProvider.validateToken(token)) {
 			// 토큰 유효성 검증
-			Authentication auth = this.tokenProvider.getAuthentication(token);
-			SecurityContextHolder.getContext().setAuthentication(auth);
+				Authentication auth = this.tokenProvider.getAuthentication(token);
+				SecurityContextHolder.getContext().setAuthentication(auth);
 		}
 		filterChain.doFilter(request, response);
 	}

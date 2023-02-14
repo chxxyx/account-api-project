@@ -1,8 +1,6 @@
-package com.chxxyx.projectfintech.domain.account.dto;
+package com.chxxyx.projectfintech.domain.account.model;
 
-import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @RequiredArgsConstructor
-public class CreateAccount {
+public class ModifyAccount {
 
 	@Getter
 	@Setter
@@ -20,13 +18,11 @@ public class CreateAccount {
 	public static class Request {
 
 		@NotBlank
-		private String username;
-		@NotBlank
-		private String password;
+		private String accountNumber;
 		@NotBlank
 		private String accountPassword;
-		@NotNull
-		private Long balance;
+		@NotBlank
+		private String accountRePassword;
 
 	}
 
@@ -39,13 +35,13 @@ public class CreateAccount {
 
 		private String username;
 		private String accountNumber;
-		private LocalDateTime registeredAt;
+		private String accountPassword;
 
 		public static Response from(AccountDto accountDto) {
 
 			return Response.builder().username(accountDto.getUsername())
 				.accountNumber(accountDto.getAccountNumber())
-				.registeredAt(accountDto.getRegisteredAt()).build();
+				.accountPassword(accountDto.getAccountPassword()).build();
 		}
 	}
 }
