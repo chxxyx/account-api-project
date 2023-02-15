@@ -62,7 +62,6 @@
 - Java
 - MariaDB
 - JPA
-- Redis
 
 ## 프로젝트 기능
 
