@@ -6,6 +6,10 @@
 
 ## 개발 기간
 
+## 프로젝트 구조
+<img width="524" alt="스크린샷 2022-12-29 오후 3 24 39" src="https://user-images.githubusercontent.com/97508297/219263653-0c0c7858-7e04-4f76-b2c7-9a7bfa82c28f.png">
+
+
 ## ERD
 <img width="712" alt="스크린샷 2023-01-28 오전 1 19 00" src="https://user-images.githubusercontent.com/97508297/215273546-6efd079f-c5a9-4fc9-83f9-1c590b4e6e6b.png">
 
