@@ -1,12 +1,12 @@
-package com.chxxyx.projectfintech;
+package com.chxxyx.projectfintech.encrypt;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.chxxyx.projectfintech.config.security.JasyptConfig;
+import com.chxxyx.projectfintech.config.security.JasyptConfiguration;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.junit.jupiter.api.Test;
 
-public class EncryptionApplicationTest extends JasyptConfig {
+public class EncryptionApplicationTest extends JasyptConfiguration {
 
 	@Test
 	public void jasypt_암호화_복호화() {

@@ -2,6 +2,7 @@ package com.chxxyx.projectfintech.domain.user.model;
 
 import com.chxxyx.projectfintech.domain.user.type.UserRole;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

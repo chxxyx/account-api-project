@@ -1,27 +1,25 @@
 package com.chxxyx.projectfintech.config.jwt;
 
-import com.chxxyx.projectfintech.config.redis.RedisService;
+import com.chxxyx.projectfintech.domain.user.model.UserDto;
 import com.chxxyx.projectfintech.domain.user.service.AuthorityService;
 import com.chxxyx.projectfintech.domain.user.service.UserService;
 import com.chxxyx.projectfintech.domain.user.type.UserRole;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 @Component
 @RequiredArgsConstructor
@@ -58,11 +56,11 @@ public class TokenProvider {
 	}
 
 	// JWT 토큰에서 인증 정보 조회
-	public Authentication getAuthentication(String token) {
-		UserDetails userDetails = authorityService.loadUserByUsername(this.getUserPk(token));
-		return new UsernamePasswordAuthenticationToken(userDetails, "",
-			userDetails.getAuthorities());
-	}
+//	public Authentication getAuthentication(String token) {
+//		UserDetails userDetails = authorityService.loadUserByUsername(this.getUserPk(token));
+//		return new UsernamePasswordAuthenticationToken(userDetails, "",
+//			userDetails.getAuthorities());
+//	}
 
 	// 토큰에서 회원 정보 추출
 	public String getUserPk(String token) {

@@ -37,15 +37,13 @@ public class UserController {
 
 	}
 
-	// 로그인
+	/*
+	 	로그인
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginUser loginUser) {
 
-		User user = userService.login(loginUser);
-		String username = user.getUsername();
-		UserRole role = user.getRole();
-
-		String token = tokenProvider.generatedToken(username, role);
+		String token = userService.login(loginUser);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.add(JwtAuthenticationFilter.TOKEN_HEADER,

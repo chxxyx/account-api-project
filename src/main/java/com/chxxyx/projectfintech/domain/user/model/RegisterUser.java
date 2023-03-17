@@ -2,6 +2,7 @@ package com.chxxyx.projectfintech.domain.user.model;
 
 import com.chxxyx.projectfintech.domain.user.type.UserRole;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;

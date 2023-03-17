@@ -1,29 +1,39 @@
 package com.chxxyx.projectfintech.domain.user.service;
 
+import static com.chxxyx.projectfintech.domain.user.type.UserRole.ROLE_USER;
+
 import com.chxxyx.projectfintech.config.jwt.TokenProvider;
+import com.chxxyx.projectfintech.config.redis.RedisConfiguration;
 import com.chxxyx.projectfintech.domain.user.model.RegisterUser;
+import com.chxxyx.projectfintech.domain.user.model.TokenDto;
 import com.chxxyx.projectfintech.domain.user.model.UserDto;
 import com.chxxyx.projectfintech.domain.user.entity.User;
+import com.chxxyx.projectfintech.domain.user.repository.UserCacheRepository;
 import com.chxxyx.projectfintech.domain.user.type.UserRole;
 import com.chxxyx.projectfintech.domain.user.model.LoginUser;
 import com.chxxyx.projectfintech.domain.user.exception.UserError;
 import com.chxxyx.projectfintech.domain.user.exception.UserException;
 import com.chxxyx.projectfintech.domain.user.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class   UserService {
 
 	private final UserRepository userRepository;
+	private final UserCacheRepository userCacheRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final TokenProvider tokenProvider;
-
+	private final AuthorityService authorityService;
+	private RedisConfiguration redisConfiguration;
 	public UserDto registerUser(RegisterUser.Request parameter) {
 		Optional<User> optionalUser = userRepository.findByUsername(parameter.getUsername());
 
@@ -37,20 +47,22 @@ public class UserService {
 
 		return UserDto.fromEntity(userRepository.save(
 			User.builder().username(parameter.getUsername()).password(encPassword).SSN(encSsn)
-				.name(parameter.getName()).createdAt(LocalDateTime.now()).role(UserRole.ROLE_USER)
+				.name(parameter.getName()).createdAt(LocalDateTime.now()).role(ROLE_USER).id()
 				.build()));
 
 	}
 
-	public User login(LoginUser parameter) {
+	public TokenDto login(LoginUser parameter) {
 		User user = userRepository.findByUsername(parameter.getUsername())
-			.orElseThrow(() -> new RuntimeException("존재 하지 않는 ID 입니다."));
+			.orElseThrow(() -> new UserException(UserError.USER_NOT_FOUND));
 
 		if (!passwordEncoder.matches(parameter.getPassword(), user.getPassword())) {
-			throw new RuntimeException("비밀번호가 일치 하지 않습니다.");
+			throw new UserException(UserError.USER_PASSWORD_UN_MATCH);
 		}
 
-		return user;
+		String tokenDto = tokenProvider.generatedToken(user.getUsername(), user.getRole());
+
+		return tokenDto;
 	}
 
 }
