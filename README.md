@@ -242,22 +242,3 @@
 </details>
 
 
-<details>
-<summary> 계좌 검색 기능 ( 구현 예정 ) </summary>
-<div markdown="1">   
-
-    - 유저의 계좌 검색이 가능하다.
-        - 유저의 이름, 아이디, 계좌번호로 검색할 수 있다.
-
-</div>
-</details>
-
-<details>
-<summary> 관리자 CRUD ( 구현 예정 )</summary>
-<div markdown="1">   
-
-    - 관리자 목록을 조회를 통해 관리자 추가와 삭제가 가능하다.
-        - 관리자 아이디, 이름, 비밀번호 등의 정보 조회 할 수 있다.
-</div>
-</details>
-
